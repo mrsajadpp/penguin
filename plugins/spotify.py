@@ -23,5 +23,6 @@ def sp_download(track_url):
   external_url = track_info['external_urls']['spotify']
 
   # Print the URLs
+  print(track_info)
   print('Preview URL:', preview_url)
   print('External URL:', external_url)
