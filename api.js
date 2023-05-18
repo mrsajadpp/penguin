@@ -1,8 +1,11 @@
 const express = require('express');
+const puppeteer = require('puppeteer');
 const Spotify = require('spotifydl-core').default;
 const SpotifyWebApi = require('spotify-web-api-node');
 const bodyParser = require('body-parser');
 const sanitizeFilename = require('sanitize-filename');
+
+const launch = puppeteer.launch({ headless: true });
 
 const app = express();
 const port = 3000; // Set your desired port number
@@ -71,6 +74,34 @@ function getSongDetails(songId, callback) {
         }
     );
 }
+
+app.post('/ig/download', async (req, res) => {
+    try {
+        const { reel_url } = req.body;
+        if (reel_url) {
+            console.log(reel_url);
+            const browser = await puppeteer.launch({ headless: true });
+            const page = await browser.newPage();
+            const newPage = await page.goto(reel_url);
+            const pageTitle = await page.title();
+            setTimeout(async () => {
+                const video = await page.evaluate(async () => {
+                    return await document.querySelector('video').src;
+                });
+                setTimeout( async () => {
+                    console.log(video);
+                    await browser.close();
+                    res.json({ 'video_url': video, 'name': pageTitle, 'status': 200 });
+                }, 1000);
+            }, 4000); 
+        } else {
+            res.json({ 'error': 'Reel url is required', 'status': 404 })
+        }
+    } catch (error) {
+        console.error(error)
+        res.json({ 'error': error, 'status': 500 })
+    }
+})
 
 app.listen(port, () => {
     console.log(`Express API is running on port ${port}`);

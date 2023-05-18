@@ -4,6 +4,8 @@
     "express": "^4.18.2",
     "ffmpeg": "^0.0.4",
     "fluent-ffmpeg": "^2.1.2",
+    "nodemon": "^2.0.22",
+    "puppeteer": "^20.2.1",
     "request": "^2.88.2",
     "sanitize-filename": "^1.6.3",
     "spotify": "^0.3.0",
@@ -14,9 +16,10 @@
   "name": "penguin",
   "description": "Penguin is a multimedia downloader website by Thintry.",
   "version": "1.0.0",
-  "main": "cls.js",
+  "main": "api.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon api"
   },
   "keywords": [],
   "author": "",
