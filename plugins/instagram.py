@@ -1,16 +1,18 @@
 import requests
+from selenium import webdriver
 
-# Call the function with the URL of the Instagram reel
 
 def ig_download(reel_url, doc_type):
-    payload = {
-        'reel_url': reel_url
-    }
-    response = requests.post('http://localhost:3000/ig/download', json=payload)
-    if(doc_type == 'mp4'):
-      if response.status_code == 200:
-          data = response.json()
-          if(data['status'] == 200):
-            return { 'reel_url': data['video_url'], 'file_name': data['name'], 'type': 'mp4', 'status': 200 } 
-          else:
-            return { 'type': 'mp4', 'status': 404 }
+    driver = webdriver.Chrome('C:\penguin\chromedriver_win32')
+    # Navigate to the website
+    driver.get(reel_url)
+    # Locate the video element
+    div = driver.find_elements(By.CSS_SELECTOR, 'div.x1i10hfl')
+    driver.switch_to.frame(div)
+    video = driver.find_elements(By.CSS_SELECTOR, 'video')
+    # Extract the source URL of the video
+    video_src = video.get_attribute('src')
+    print(video_src)
+
+    # Clean up and quit the WebDriver
+    driver.quit()

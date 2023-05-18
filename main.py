@@ -71,7 +71,6 @@ def igtdl():
     # Download the file from the external link
     res = requests.get(response['reel_url'])
     if (response['status'] == 200):
-        print(response['file_name'])
         if (response['type'] == 'mp4'):
 
             # Set the appropriate headers for the response
